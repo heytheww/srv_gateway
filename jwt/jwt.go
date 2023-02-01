@@ -12,7 +12,7 @@ type JWT struct {
 }
 
 type MyClaims struct {
-	User string
+	User string `json:"user,omitempty"`
 	jwt.RegisteredClaims
 }
 
@@ -34,22 +34,21 @@ func (j *JWT) Validate(tokenString string) bool {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return token, nil
+		return j.HMACSecret, nil
 	})
 
-	if claims, ok := token.Claims.(*MyClaims); ok && token.Valid {
-		fmt.Println(
-			claims.IssuedAt,
-			claims.ExpiresAt,
-			claims.Subject,
-			claims.Audience,
-			claims.NotBefore,
-			claims.IssuedAt)
+	if err != nil {
+		log.Fatalln(" jwt.Parse:", err)
+	}
 
+	fmt.Println(token.Valid)
+	if token.Valid {
+		fmt.Println(token)
 		// token验证成功
 		flag = true
 	} else {
-		log.Fatalln(err)
+		// token验证失败
+		flag = false
 	}
 
 	return flag

@@ -1,5 +1,0 @@
-{
-    "ProxyTarget":"localhost:1234",
-    "Scheme":"http",
-    "Path":"/buy"
-}
