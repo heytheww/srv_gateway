@@ -2,7 +2,6 @@ package jwt
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -37,8 +36,10 @@ func (j *JWT) Validate(tokenString string) bool {
 		return j.HMACSecret, nil
 	})
 
+	// token验证失败
 	if err != nil {
-		log.Fatalln(" jwt.Parse:", err)
+		fmt.Println(" jwt.Parse:", err)
+		flag = false
 	}
 
 	fmt.Println(token.Valid)
@@ -47,7 +48,7 @@ func (j *JWT) Validate(tokenString string) bool {
 		// token验证成功
 		flag = true
 	} else {
-		// token验证失败
+
 		flag = false
 	}
 
